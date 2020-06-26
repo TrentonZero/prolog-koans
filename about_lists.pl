@@ -6,17 +6,27 @@
 	my_duplicate_for_n/3, my_drop/3, my_split/4, my_slice/4,
 	my_rotate/3, remove_at/4, insert_at/4, range/3]).
 
+
+my_first(H, [H|_]).
 my_first(_,_) :- false.
 
 my_last(X, [X]).
+my_last(X, [_|T]) :- my_last(X,T).
 my_last(_,_) :- false.
 
-my_penultimate(_,_) :- false.
 my_penultimate(X, [_|T]) :- my_penultimate(X, T).
+my_penultimate(X, [X,Y]).
+my_penultimate(_,_) :- false.
 
-my_element_at(X,[X|_],1).
+my_element_at(X,[X|_], 1).
+my_element_at(X,[_|T], C) :-
+    NextC is C-1,
+    my_element_at(X, T, NextC).
 my_element_at(_,_,_) :- false.
 
+my_number_of(C, [H|T]) :-
+    my_number_of(NextC, T),
+    C is NextC+1.
 my_number_of(0,[]).
 my_number_of(_,_) :- false.
 
