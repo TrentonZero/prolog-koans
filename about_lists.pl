@@ -30,9 +30,28 @@ my_number_of(C, [H|T]) :-
 my_number_of(0,[]).
 my_number_of(_,_) :- false.
 
+
+% bad way: each callt o append is 0(n^2)
+my_reverse_bad([], []).
+my_reverse_bad([H|T], Rev) :-
+    reverse(T, Trev),
+    append(Trev, [H], Rev).
+my_reverse_bad(_,_) :- false.
+
+% good way....overload the name with params we need
+my_reverse(X, Xrev) :- my_reverse(X, [], Xrev).
 my_reverse(_,_) :- false.
 
+my_reverse([], Rev, Rev).  % base case
+my_reverse([H|T], Prev, Rev) :-
+    my_reverse(T, [H|Prev], Rev).
+
+is_palindrome(X) :-
+    my_reverse(X, X).
 is_palindrome(_) :- false.
+
+
+
 
 my_flatten(_,_) :- false.
 
